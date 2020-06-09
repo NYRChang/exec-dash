@@ -3,14 +3,27 @@
 import os
 import csv
 import pandas
+import datetime
 
 #Receive input for the Year
 year = input("Please input year of data (YYYY): ")
+while True:
+    if len(year) != 4:
+        year = input("Please re-enter year in YYYY format: ")
+    else:
+        break
 
 #Receive input for the Month
 month = input("Please input month of data (MM): ")
+while True:
+    if len(month) != 2:
+        month = input("Please re-enter month in MM format: ")
+    else:
+        break
 
-csv_file_path = os.path.join(os.path.dirname(__file__), "..", "data", "monthly-sales", str("sales-" + year + month + ".csv"))
+data_period = year + month
+
+csv_file_path = os.path.join(os.path.dirname(__file__), "..", "data", "monthly-sales", str("sales-" + data_period + ".csv"))
 
 df = pandas.read_csv(csv_file_path)
 pandas.options.display.float_format = '${:,.2f}'.format
