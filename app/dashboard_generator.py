@@ -4,9 +4,15 @@ import os
 import csv
 import pandas
 
+#Receive input for the Year
+#Receive input for the Month
+#concatenate the Year and month onto the file name below
+
+
 csv_file_path = os.path.join(os.path.dirname(__file__), "..", "data", "monthly-sales", "sales-201710.csv")
 
 df = pandas.read_csv(csv_file_path)
+pandas.options.display.float_format = '${:,.2f}'.format
 
 def to_usd(my_price):
     """
@@ -39,9 +45,11 @@ print("TOTAL MONTHLY SALES:", to_usd(df["sales price"].sum()))
 
 print("-----------------------")
 print("TOP SELLING PRODUCTS:")
-print("  1) Button-Down Shirt: $6,960.35")
-print("  2) Super Soft Hoodie: $1,875.00")
-print("  3) etc.")
+top_sellers = df.groupby(["product"]).sum()
+top_sellers = top_sellers.sort_values('sales price', ascending=False)
+top_sellers = top_sellers.reset_index()
+top_sellers.index = top_sellers.index + 1
+print(top_sellers[["product" , "sales price"]].to_string(header=False))
 
 print("-----------------------")
 print("VISUALIZING THE DATA...")
