@@ -1,9 +1,10 @@
 # dashboard_generator.py
 
 import os
-import csv
+#import csv
 import pandas
 import datetime
+import plotly
 
 #Receive input for the Year
 year = input("Please input year of data (YYYY): ")
@@ -67,3 +68,4 @@ print(top_sellers[["product" , "sales price"]].to_string(header=False))
 
 print("-----------------------")
 print("VISUALIZING THE DATA...")
+
