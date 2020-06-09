@@ -2,8 +2,11 @@
 
 import os
 import csv
+import pandas
 
 csv_file_path = os.path.join(os.path.dirname(__file__), "..", "data", "monthly-sales", "sales-201710.csv")
+
+df = pandas.read_csv(csv_file_path)
 
 def to_usd(my_price):
     """
@@ -17,14 +20,12 @@ def to_usd(my_price):
     """
     return f"${my_price:,.2f}" #> $12,000.71
 
-total_sales = 0
-
-
-with open(csv_file_path, "r") as csv_file: # "r" means "open the file for reading"
-    reader = csv.DictReader(csv_file) # assuming your CSV has headers
-    # reader = csv.reader(csv_file) # if your CSV doesn't have headers
-    for row in reader:
-        total_sales = total_sales + float(row["sales price"])
+#total_sales = 0
+#with open(csv_file_path, "r") as csv_file: # "r" means "open the file for reading"
+#    reader = csv.DictReader(csv_file) # assuming your CSV has headers
+#    # reader = csv.reader(csv_file) # if your CSV doesn't have headers
+#    for row in reader:
+#        total_sales = total_sales + float(row["sales price"])
 
 
 print("-----------------------")
@@ -34,7 +35,7 @@ print("-----------------------")
 print("CRUNCHING THE DATA...")
 
 print("-----------------------")
-print("TOTAL MONTHLY SALES:", to_usd(total_sales))
+print("TOTAL MONTHLY SALES:", to_usd(df["sales price"].sum()))
 
 print("-----------------------")
 print("TOP SELLING PRODUCTS:")
