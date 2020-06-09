@@ -5,11 +5,12 @@ import csv
 import pandas
 
 #Receive input for the Year
+year = input("Please input year of data (YYYY): ")
+
 #Receive input for the Month
-#concatenate the Year and month onto the file name below
+month = input("Please input month of data (MM): ")
 
-
-csv_file_path = os.path.join(os.path.dirname(__file__), "..", "data", "monthly-sales", "sales-201710.csv")
+csv_file_path = os.path.join(os.path.dirname(__file__), "..", "data", "monthly-sales", str("sales-" + year + month + ".csv"))
 
 df = pandas.read_csv(csv_file_path)
 pandas.options.display.float_format = '${:,.2f}'.format
