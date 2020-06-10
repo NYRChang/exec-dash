@@ -5,6 +5,7 @@ import os
 import pandas
 import datetime
 import plotly
+import plotly.graph_objects as go
 
 #Receive input for the Year
 year = input("Please input year of data (YYYY): ")
@@ -69,3 +70,15 @@ print(top_sellers[["product" , "sales price"]].to_string(header=False))
 print("-----------------------")
 print("VISUALIZING THE DATA...")
 
+chart_stats = top_sellers.to_dict("records")
+print(chart_stats)
+
+
+product_category = [row["product"] for row in chart_stats]
+sales_figures = [row["sales price"] for row in chart_stats]
+
+fig = go.Figure([go.Bar(x = sales_figures, y = product_category, orientation='h', text = sales_figures, textposition='auto')])
+fig.update_layout(xaxis = dict(title = 'Total Monthly Sales'), xaxis_tickangle = -45, yaxis=dict(title = 'Product', autorange="reversed"), xaxis_tickformat = '$,.2f')
+fig.update_traces(texttemplate = '$%{text:,.2f}' , textposition = 'outside')
+fig.update_layout(title_text = 'Top-Selling Products' + data_period)  #need to format date
+fig.show()
