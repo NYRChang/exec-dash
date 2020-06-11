@@ -7,27 +7,42 @@ import datetime
 import plotly
 import plotly.graph_objects as go
 
-#Receive input for the Year
-year = input("Please input year of data (YYYY): ")
 while True:
-    if len(year) != 4:
-        year = input("Please re-enter year in YYYY format: ")
-    else:
+    #Receive input for the Year
+    year = input("Please input year of data in YYYY format (or 'end' to exit): ")
+    while True:
+        if year == "end":
+            print("Thanks!  Please try again soon!")
+            exit()
+        elif len(year) != 4:
+            year = input("Please re-enter year in YYYY format (ex. 2020): ")
+        else:
+            break
+
+    #Receive input for the Month
+    month = input("Please input month of data in MM format (or 'end' to exit): ")
+    while True:
+        if month == "end":
+            print("Thanks!  Please try again soon!")
+            exit()
+        elif len(month) != 2:
+            month = input("Please re-enter month in MM format (ex. July = 07): ")
+        else:
+            break
+
+    #Defining the filepath
+    data_period = year + month
+    csv_file_path = os.path.join(os.path.dirname(__file__), "..", "data", "monthly-sales", str("sales-" + data_period + ".csv"))
+
+    #Validating if file exists in the path
+    try:
+        os.path.exists(csv_file_path)
+        df = pandas.read_csv(csv_file_path)
         break
+    except FileNotFoundError:
+        print("No sales data exists for that period.  Please re-enter Year and Month.")
 
-#Receive input for the Month
-month = input("Please input month of data (MM): ")
-while True:
-    if len(month) != 2:
-        month = input("Please re-enter month in MM format: ")
-    else:
-        break
 
-data_period = year + month
-
-csv_file_path = os.path.join(os.path.dirname(__file__), "..", "data", "monthly-sales", str("sales-" + data_period + ".csv"))
-
-df = pandas.read_csv(csv_file_path)
 pandas.options.display.float_format = '${:,.2f}'.format
 
 def to_usd(my_price):
@@ -71,7 +86,7 @@ print("-----------------------")
 print("VISUALIZING THE DATA...")
 
 chart_stats = top_sellers.to_dict("records")
-print(chart_stats)
+#print(chart_stats)
 
 
 product_category = [row["product"] for row in chart_stats]
