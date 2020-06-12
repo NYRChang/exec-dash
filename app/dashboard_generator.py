@@ -32,6 +32,7 @@ while True:
 
     #Defining the filepath
     data_period = year + month
+    mydate = datetime.date(int(year), int(month), 15)
     csv_file_path = os.path.join(os.path.dirname(__file__), "..", "data", "monthly-sales", str("sales-" + data_period + ".csv"))
 
     #Validating if file exists in the path
@@ -66,7 +67,7 @@ def to_usd(my_price):
 
 
 print("-----------------------")
-print("MONTH: March 2018")
+print("MONTH:", mydate.strftime("%B %Y"))
 
 print("-----------------------")
 print("CRUNCHING THE DATA...")
@@ -95,5 +96,5 @@ sales_figures = [row["sales price"] for row in chart_stats]
 fig = go.Figure([go.Bar(x = sales_figures, y = product_category, orientation='h', text = sales_figures, textposition='auto')])
 fig.update_layout(xaxis = dict(title = 'Total Monthly Sales'), xaxis_tickangle = -45, yaxis=dict(title = 'Product', autorange="reversed"), xaxis_tickformat = '$,.2f')
 fig.update_traces(texttemplate = '$%{text:,.2f}' , textposition = 'outside')
-fig.update_layout(title_text = 'Top-Selling Products' + data_period)  #need to format date
+fig.update_layout(title_text = 'Top-Selling Products: ' + mydate.strftime("%B %Y"))  
 fig.show()
