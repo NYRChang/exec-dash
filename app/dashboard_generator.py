@@ -7,26 +7,31 @@ import datetime
 import plotly
 import plotly.graph_objects as go
 
+print("List of monthly sales data available (sales-YYYYMM.csv):")
+for files in os.listdir(os.path.join(os.path.dirname(__file__), "..", "data", "monthly-sales")):
+    print(files)
+
+
 while True:
     #Receive input for the Year
-    year = input("Please input year of data in YYYY format (or 'end' to exit): ")
+    year = input("Please input year of data in YYYY format (or 'exit' to exit): ")
     while True:
-        if year == "end":
+        if year == "exit":
             print("Thanks!  Please try again soon!")
             exit()
         elif len(year) != 4:
-            year = input("Please re-enter year in YYYY format (ex. 2020): ")
+            year = input("Please re-enter valid year in YYYY format (ex. 2020): ")
         else:
             break
 
     #Receive input for the Month
     month = input("Please input month of data in MM format (or 'end' to exit): ")
     while True:
-        if month == "end":
+        if month == "exit":
             print("Thanks!  Please try again soon!")
             exit()
-        elif len(month) != 2:
-            month = input("Please re-enter month in MM format (ex. July = 07): ")
+        elif len(month) != 2 or int(month) > 12:
+            month = input("Please re-enter valid month in MM format (ex. July = 07): ")
         else:
             break
 
@@ -95,6 +100,7 @@ sales_figures = [row["sales price"] for row in chart_stats]
 
 fig = go.Figure([go.Bar(x = sales_figures, y = product_category, orientation='h', text = sales_figures, textposition='auto')])
 fig.update_layout(xaxis = dict(title = 'Total Monthly Sales'), xaxis_tickangle = -45, yaxis=dict(title = 'Product', autorange="reversed"), xaxis_tickformat = '$,.2f')
-fig.update_traces(texttemplate = '$%{text:,.2f}' , textposition = 'outside')
-fig.update_layout(title_text = 'Top-Selling Products: ' + mydate.strftime("%B %Y"))  
+fig.update_traces(texttemplate = '$%{text:,.2f}' , textposition='outside', textfont_size=10)
+fig.update_layout(title_text = 'Top-Selling Products: ' + mydate.strftime("%B %Y") , title_font=dict(family="Arial", size=24))
+fig.update_xaxes(automargin=True)
 fig.show()
